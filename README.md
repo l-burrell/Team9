@@ -16,11 +16,11 @@ Farhana
 ### Frontend 
 - HTML
 - CSS
-- Flask
 
 
 ### Middle Layer 
 - Python
+- Flask
 
 
 ### Database 
