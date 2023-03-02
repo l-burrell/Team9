@@ -1,0 +1,29 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background-color: #f0edec;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+form {
+    border: solid black 2px;
+    width: 500px;
+    margin: auto;
+}
+form div {
+    margin: 30px;
+}
+
+form label {
+    display: block;
+}
+form input {
+    width: 100%;
+    padding: 10px;
+}
+form button {
+    margin: auto;
+    width: 120px;
+    height: 30px;
+}
