@@ -42,3 +42,10 @@ form button {
 .home_header, .home_submit {
     text-transform: uppercase;
 }
+.home_submit:hover {
+    background-color: #f0e62a;
+    color: black;
+    border: solid black 1px;
+    transition-delay: .05s;
+    cursor: grab;
+}
