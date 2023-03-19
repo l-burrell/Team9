@@ -43,7 +43,7 @@ Josh
 
 <BR>
 
-3. Activate the venv: 
+3. Activate the environment: 
 <br> command: . venv/bin/activate
 
 <BR>
