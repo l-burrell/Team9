@@ -12,3 +12,7 @@ def index():
 def register():
     return render_template('register.html')
 
+@app.route('/PostersToJudge')
+
+def PostersToJudge():
+    return render_template('PostersToJudge.html')
