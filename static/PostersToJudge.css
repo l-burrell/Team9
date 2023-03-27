@@ -1,0 +1,57 @@
+body {
+    background-color: #3535c5;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.title{
+    color: white;
+    text-align: center;
+}
+
+.mainBox{
+    background-color: white;
+    border-radius: 7px;
+    height: 400px;
+    border-style: solid;
+    border-color: black;
+    border-width: 3px;
+    padding-left:5px;
+    padding-right:5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.flex-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+    border-width: 3px;
+}
+
+.posterTitle{
+    font-size: 20px;
+}
+
+.judgeButton{
+    background-color: #3535c5;
+    color: white;
+    font-size: 20px;
+    border-color: black;
+    border-radius: 7px;
+    padding: 3px;
+}
+
+.judgeButton:hover{
+    background-color: white;
+    color: black;
+    border-color: #3535c5;
+}
+
+.posterCount{
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
