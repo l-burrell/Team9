@@ -1,0 +1,145 @@
+html
+{
+    box-sizing: border-box;
+    font-size: 100%;
+}
+*
+{
+    margin: 0;
+    padding: 0;
+}
+*,*::before,*::after
+{
+    box-sizing: inherit;
+}
+
+h1, h2, h3 
+{
+    margin-top: 0px;
+}
+
+section, aside, div 
+{
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+body
+{
+    background: rgb(0, 0, 85);
+    text-align: center left;
+    font-family: 'Times New Roman', times, seif;
+}
+
+.flex-container
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 
+}
+
+.main-content
+{
+    background-color: rgb(137, 172, 184);
+    color: rgb(0, 0, 85);
+    font-weight: bold;
+    font-size: larger;
+    flex: 3;
+    text-align: left;
+    justify-content: center;
+    margin-left: 2%;
+}
+.sidebar
+{
+    background-color: rgb(158, 173, 179);
+    color: rgb(0, 0, 85);
+    font-weight: bold;
+    flex: 1;
+    margin-right: 2%;
+}
+
+#display_image
+{
+    width: 390px;
+    height: 270px;
+    border: 3px solid black;
+    background: url(as.jpg) no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-top: 100px;
+}
+
+.wrap 
+{
+    display: grid;
+}
+  
+.wrap::after 
+{
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+}
+  
+.wrap > textarea 
+{
+    resize: none;
+    overflow: hidden;
+}
+  
+.wrap > textarea, .wrap::after 
+{
+    border: 1px solid black;
+    padding: 0.5rem;
+    padding-bottom: 9.5rem;
+    font: inherit;
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+input
+{
+    width: 60%;
+    height: 30px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+.logout 
+{ 
+    display:flex; 
+    justify-content:flex-end; 
+    align-items:center;  
+} 
+
+button
+{
+    background-color: #00203fff;
+    color: #adefd1ff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+  
+button:hover 
+{
+    background-color: #adefd1ff;
+    color: #00203fff;
+}
+
+#title,#groupEmail,#category,#description
+{
+    background-color: rgb(222, 234, 238);
+    color: black;
+}
+
+
+
+
+
+  
