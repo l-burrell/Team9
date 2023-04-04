@@ -1,7 +1,5 @@
 import sqlite3
 from users import User
-from posters import Poster
-
 
 db_connection = sqlite3.connect(':memory:')
 
@@ -59,7 +57,7 @@ def delete_poster(poster):
                   {'poster_id':poster.poster_id})
 
 
-acc = Collection('John', 'so@student.gsu.edu', 'password')
+acc = User('John', 'so@student.gsu.edu', 'password')
 
 create_user(acc)
 
