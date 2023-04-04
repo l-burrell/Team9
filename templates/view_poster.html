@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/css/foundation.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/view_poster_css.css') }}">
+        <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/js/foundation.min.js" crossorigin="anonymous"></script>
+        <title>Poster Display</title>
+    </head>
+    <body>
+        <div class=top-bar id=navbar>
+            <div class="top-bar-left">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li id="title">Test Poster [{{ id }}]</li>
+                </ul>
+            </div>
+            <div class="top-bar-right">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li id="logout"><a href="/index.html"><button type="button" class="button">Log Out</button></a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="body">
+            <div class="grid-x">
+                <div id="information" class="small-12 medium-3 large-3">
+                    <div id="infosection"><p1><b>Title: </b></p1><p4>Test Poster</p4><br></div>
+                    <div id="infosection"><p1><b>Names: </b></p1><p4>Person 1, Person 2, Person 3</p4><br></div>
+                    <div id="infosection"><p1><b>Category: </b></p1><p4> Test Category</p4><br></div>
+                    <div id="infosection"><p1><b>Description: </b></p1><p4> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p4><br></div>
+                </div>
+                <div id="imagecontainer" class="small-12 medium-6 large-6">
+                    <img src="{{ url_for('static',filename='styles/TestPoster.jpg') }}" id="image">
+                </div>
+                <div id="scores" class="small-12 medium-3 large-3">
+                    <p1 id="scoretitle"><b>Scores</b></p1>
+                    <div>
+                        <div id="scoresection"><p1>Clarity:  </p1><p4 id="score"><b>x/20</b></p4></div>
+                        <div id="scoresection"><p1>Organization:  </p1><p4 id="score"><b>x/20</b></p4></div>
+                        <div id="scoresection"><p1>Content:  </p1><p4 id="score"><b>x/20</b></p4></div>
+                        <div id="scoresection"><p1>Relevance:  </p1><p4 id="score"><b>x/20</b></p4></div>
+                        <div id="scoresection"><p1>Visual appeal:  </p1><p4 id="score"><b>x/20</b></p4></div>
+                        <div id="scoresection"><p1>Total Score:  </p1><p4 id="score"><b>total/100</b></p4></div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </body>
+</html>
