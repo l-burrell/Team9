@@ -8,10 +8,12 @@ btn.addEventListener('click', () => {
     var email = document.getElementById('email').value;
     console.log("email: ", email)
     if(re_jud.test(email)){
-        self.window.location.href = "posterstojudge.html";
+        self.window.location.href = "posters";
+        // self.window.location.href = "posterstojudge";
     }
     else if(re_con.test(email)){
-        self.window.location.href = "upload_poster.html";
+        self.window.location.href = "upload_poster";
+        // self.window.location.href = "upload_poster";
     }
     else {
         console.log('[invalid email] must be a gsu associated email address');
