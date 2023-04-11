@@ -33,7 +33,7 @@ class PosterRetriever:
 
         #Close connection and return value
         conn.close()
-        return title
+        return title[0]
 
 
     #Returns the emails of the poster using poster_id
@@ -56,7 +56,7 @@ class PosterRetriever:
 
         #Close connection and return value
         conn.close()
-        return emails
+        return emails[0]
     
 
     #Returns the description of the poster using poster_id
@@ -79,7 +79,7 @@ class PosterRetriever:
 
         #Close connection and return value
         conn.close()
-        return description
+        return description[0]
     
 
     #Returns the category of the poster using poster_id
@@ -102,7 +102,7 @@ class PosterRetriever:
 
         #Close connection and return value
         conn.close()
-        return category
+        return category[0]
 
 
 
