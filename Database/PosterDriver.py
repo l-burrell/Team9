@@ -2,10 +2,6 @@
 import sqlite3
 from sqlite3 import Error
 
-#import Poster
-import poster
-from poster import Poster
-
 #Start of class
 class PosterRetriever:
 
@@ -33,7 +29,13 @@ class PosterRetriever:
 
         #Close connection and return value
         conn.close()
-        return title[0]
+
+        #Check if result is valid before subscripting
+        if title is not None:
+            return title[0]
+        
+        #Return invalid statement
+        return "None"
 
 
     #Returns the emails of the poster using poster_id
@@ -56,7 +58,13 @@ class PosterRetriever:
 
         #Close connection and return value
         conn.close()
-        return emails[0]
+
+        #Check if result is valid before subscripting
+        if emails is not None:
+            return emails[0]
+        
+        #Return invalid statement
+        return "None"
     
 
     #Returns the description of the poster using poster_id
@@ -79,7 +87,13 @@ class PosterRetriever:
 
         #Close connection and return value
         conn.close()
-        return description[0]
+
+        #Check if result is valid before subscripting
+        if description is not None:
+            return description[0]
+        
+        #Return invalid statement
+        return "None"
     
 
     #Returns the category of the poster using poster_id
@@ -102,7 +116,13 @@ class PosterRetriever:
 
         #Close connection and return value
         conn.close()
-        return category[0]
+
+        #Check if result is valid before subscripting
+        if category is not None:
+            return category[0]
+        
+        #Return invalid statement
+        return "None"
 
 
 
