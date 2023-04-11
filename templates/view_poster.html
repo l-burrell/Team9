@@ -11,7 +11,7 @@
         <div class=top-bar id=navbar>
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
-                    <li id="title">Test Poster [{{ id }}]</li>
+                    <li id="title">{{ title }} [#{{ id }}]</li>
                 </ul>
             </div>
             <div class="top-bar-right">
@@ -23,23 +23,23 @@
         <div id="body">
             <div class="grid-x">
                 <div id="information" class="small-12 medium-3 large-3">
-                    <div id="infosection"><p1><b>Title: </b></p1><p4>Test Poster</p4><br></div>
-                    <div id="infosection"><p1><b>Names: </b></p1><p4>Person 1, Person 2, Person 3</p4><br></div>
-                    <div id="infosection"><p1><b>Category: </b></p1><p4> Test Category</p4><br></div>
-                    <div id="infosection"><p1><b>Description: </b></p1><p4> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p4><br></div>
+                    <div id="infosection"><p1><b>Title: </b></p1><p4>{{ title }}</p4><br></div>
+                    <div id="infosection"><p1><b>Emails: </b></p1><p4>{{ emails }}</p4><br></div>
+                    <div id="infosection"><p1><b>Category: </b></p1><p4> {{ category }}</p4><br></div>
+                    <div id="infosection"><p1><b>Description: </b></p1><p4> {{ description }} </p4><br></div>
                 </div>
                 <div id="imagecontainer" class="small-12 medium-6 large-6">
-                    <img src="{{ url_for('static',filename='styles/TestPoster.jpg') }}" id="image">
+                    {{ image | safe }}
                 </div>
                 <div id="scores" class="small-12 medium-3 large-3">
                     <p1 id="scoretitle"><b>Scores</b></p1>
                     <div>
-                        <div id="scoresection"><p1>Clarity:  </p1><p4 id="score"><b>x/20</b></p4></div>
-                        <div id="scoresection"><p1>Organization:  </p1><p4 id="score"><b>x/20</b></p4></div>
-                        <div id="scoresection"><p1>Content:  </p1><p4 id="score"><b>x/20</b></p4></div>
-                        <div id="scoresection"><p1>Relevance:  </p1><p4 id="score"><b>x/20</b></p4></div>
-                        <div id="scoresection"><p1>Visual appeal:  </p1><p4 id="score"><b>x/20</b></p4></div>
-                        <div id="scoresection"><p1>Total Score:  </p1><p4 id="score"><b>total/100</b></p4></div>
+                        <div id="scoresection"><p1>Clarity:  </p1><p4 id="score"><b>{{ clarity_rating }}/20</b></p4></div>
+                        <div id="scoresection"><p1>Organization:  </p1><p4 id="score"><b>{{ organization_rating }}/20</b></p4></div>
+                        <div id="scoresection"><p1>Content:  </p1><p4 id="score"><b>{{ content_rating }}/20</b></p4></div>
+                        <div id="scoresection"><p1>Relevance:  </p1><p4 id="score"><b>{{ relevance_rating }}/20</b></p4></div>
+                        <div id="scoresection"><p1>Visual appeal:  </p1><p4 id="score"><b>{{ visuals_rating }}/20</b></p4></div>
+                        <div id="scoresection"><p1>Total Score:  </p1><p4 id="score"><b>{{ total_rating }}/100</b></p4></div>
                     </div>
                 </div>
             </div>  
