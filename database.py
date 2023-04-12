@@ -5,13 +5,13 @@ db_connection = sqlite3.connect(':memory:')
 
 c = db_connection.cursor()
 
-c.execute("""CREATE TABLE user_collection (
+c.execute("""CREATE TABLE IF NOT EXISTS user_collection (
         name text,
         email text,
         password text
         )""")
 
-c.execute("""CREATE TABLE poster_collection (
+c.execute("""CREATE TABLE IF NOT EXISTS poster_collection (
         title text,
         members text,
         category text,
