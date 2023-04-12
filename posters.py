@@ -1,4 +1,3 @@
-import random
 
 class Poster:
 
@@ -14,7 +13,6 @@ class Poster:
         self.members = members
         self.category = category
         self.description = description
-        self.id = random.randint(100_000_000, 999_999_999)
 
     def calculateRating(self):
         overall_score = (self.clarity_rating + self.organization_rating + self.content_rating + self.relevance_rating + self.visual_appeal_rating)/100

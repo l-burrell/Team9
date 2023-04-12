@@ -21,8 +21,8 @@ def posters():
     return render_template('posters.html')
 
 
-@app.route('/judge/rate', methods=('GET', 'POST'))
-def rate():
+@app.route('/judge/posters/<posterID>', methods=('GET', 'POST'))
+def rate_poster(posterID):
     return render_template('judge_poster.html')
 
 
