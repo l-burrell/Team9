@@ -21,6 +21,9 @@ def create_database():
         scoreQuery = "CREATE TABLE IF NOT EXISTS scores(poster_id INTEGER PRIMARY KEY, clarity INT, organization INT, content INT, relevance INT, visuals INT);"
         cur.execute(scoreQuery)
 
+        users = "CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING NOT NULL, email STRING NOT NULL, password STRING NOT NULL, poster_id INTEGER);"
+        cur.execute(users)
+
         #Insert data into db
         #insertQuery = "INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image) values ('Test Poster', 'asiegel11@student.gsu.edu', 'Undergraduate', 'This is a test poster designed to demonstrate our project. This poster information is read from our database using flask and python', null);"
         #cur.execute(insertQuery)
@@ -32,3 +35,4 @@ def create_database():
         if conn:
             conn.close()
 
+create_database()
