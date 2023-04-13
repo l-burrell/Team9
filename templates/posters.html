@@ -9,13 +9,10 @@
 </head>
 <body>
 
-    <a href="index.html">
+    <a href="{{url_for('index')}}">
         <button>Logout</button>
     </a>
-
-    <h1 class="title">Posters To Judge</h1>
-
-    
+    <h1 class="title">Posters To Judge</h1>    
     <div class="mainBox">
         {% block content %}
         {% for poster in all_posters %}
@@ -27,61 +24,6 @@
         </div>
         {% endfor %}
         {% endblock %}
-        <!-- <div class="flex-container">
-            <p class="posterTitle">Poster Title: Blue Abyss</p>
-            <a href="judge_poster.html">
-                <button class="judgeButton">Judge</button>
-            </a>
-        </div>
-
-        <div class="flex-container">
-            <p class="posterTitle">Poster Title: Posters Posters Posters</p>
-            <a href="judge_poster.html">
-                <button class="judgeButton">Judge</button>
-            </a>
-        </div>
-
-        <div class="flex-container">
-            <p class="posterTitle">Poster Title: A Big Piece of Paper</p>
-            <a href="judge_poster.html">
-                <button class="judgeButton">Judge</button>
-            </a>
-        </div>
-
-        <div class="flex-container">
-            <p class="posterTitle">Poster Title: Wow a Poster</p>
-            <a href="judge_poster.html">
-                <button class="judgeButton">Judge</button>
-            </a>
-        </div>
-
-        <div class="flex-container">
-            <p class="posterTitle">Poster Title: Orange Slices</p>
-            <a href="judge_poster.html">
-                <button class="judgeButton">Judge</button>
-            </a>
-        </div>
-
-        <div class="flex-container">
-            <p class="posterTitle">Poster Title: The Enraged Tiger</p>
-            <a href="judge_poster.html">
-                <button class="judgeButton">Judge</button>
-            </a>
-        </div>
-
-        <div class="flex-container">
-            <p class="posterTitle">Poster Title: Flowers</p>
-            <a href="judge_poster.html">
-                <button class="judgeButton">Judge</button>
-            </a>
-        </div>
-
-        <div class="flex-container">
-            <p class="posterTitle">Poster Title: The Rat's Tail</p>
-            <a href="judge_poster.html">
-                <button class="judgeButton">Judge</button>
-            </a>
-        </div> -->
     </div>
 
     <h1 class="posterCount">You have {{(count)}} total posters to judge!!!</h1>
