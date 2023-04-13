@@ -82,10 +82,26 @@ def posters():
 
 @app.route('/judge/posters/<posterID>', methods=('GET', 'POST'))
 def rate_poster(posterID):
-    # conn = poster_db()
-    print('found it:', posterID)
-    return render_template('judge_poster.html')
+    if request.method == 'GET':
+        conn = poster_db()
+        poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchone()
+        conn.close()
+        print('displaying poster with id:', posterID)
+        return render_template('judge_poster.html', poster=poster)
+    else:
+        print('creating a new score for poster with id:', posterID)
+        # create the scoring
+        clarity = request.form['clarity']
+        organization = request.form['organization']
+        content = request.form['content']
+        relevance = request.form['relevance']
+        visuals = request.form['visuals']
 
+        # TODO:
+        # insert the scoring into the database, and connect to the posters table....
+
+        return redirect(url_for('posters'))
+    
 
 
 # CONTESTANT ROUTES
@@ -126,11 +142,6 @@ def upload_poster(userID, posterID):
         # conn.execute("""UPDATE users SET poster_id = ? WHERE user_id = ?""", (new_poster['poster_id'], user['user_id']))
         # conn.execute("""UPDATE users SET (email, name, password, poster_id) VALUES (?, ?, ?, ?)""", 
         #                   (email, name, password, poster['poster_id']))
-
-
-
-        # conn.execute("""INSERT INTO users (email, name, password) VALUES (?, ?, ?)""", 
-        #             (email, name, password))
         # conn.commit()
         # conn.close()
         # return redirect(url_for('view_poster', posterID=poster['poster_id']))

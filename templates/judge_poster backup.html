@@ -17,25 +17,33 @@
 
     <h1>Poster Judging</h1>
 
-    {% block content %}
     <div>
         <label for="title"><b>Title:</b></label>
         <br>
-        <input type="text" id="title" name="title" value="{{poster['poster_title']}}" readonly><br><br>
+        <input type="text" id="title" name="title" value="Advanced Introduction to Concepts of Theoretical Principles" readonly><br><br>
 
         <label for="category"><b>Category:</b></label>
         <br>
-        <input type="text" id="category" name="category" value="{{poster['poster_category']}}"  readonly><br><br>
+        <input type="text" id="category" name="category" value="BA"  readonly><br><br>
 
         <label for="description"><b>Description:</b></label>
         <br>
         <textarea id="description" name="description" readonly>
-            {{poster['description']}}
+            My poster is designed to summarize key ideas of my Advanced Introduction to Concepts of Theoretical Principles.
+            The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues.
+            The 20-meter pacer test will begin in 30 seconds. Line up at the start.
+            The running speed starts slowly but gets faster each minute after you hear this signal.
+            A single lap should be completed each time you hear this sound.
+            Remember to run in a straight line, and run as long as possible.
+            The second time you fail to complete a lap before the sound, your test is over.
+            The test will begin on the word start.
+            On your mark, get ready, start.
         </textarea>
     </div>
-    {% endblock %}
+
     <br>
-    <form method='post'>
+
+    <form>
         <label for="clarity">
             <br><b>Clarity:</b>
             How well does the poster communicate its ideas?
@@ -152,7 +160,7 @@
             <b>Visual Appeal:</b>
             How visually appealing is the poster?
         </label>
-        <select name="visuals" id="visual appeal" required>
+        <select name="visual appeal" id="visual appeal" required>
             <option value="" disabled selected hidden>-</option>
             <option value="1">1</option>
             <option value="2">2</option>
@@ -176,7 +184,7 @@
             <option value="20">20</option>
         </select>
         <br>
-        <a href="{{url_for('posters')}}">
+        <a href="PostersToJudge.html">
             <button>
                 SUBMIT FEEDBACK
             </button>

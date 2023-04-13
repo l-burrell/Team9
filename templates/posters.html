@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang = "en">
 <head>
-    
     <title>Posters To Judge</title>
-
-    <!---Custom CSS stylesheet-->
     <link rel="stylesheet" href="{{ url_for('static', filename='PostersToJudge.css') }}">
 </head>
 <body>
-
     <a href="{{url_for('index')}}">
         <button>Logout</button>
     </a>
-    <h1 class="title">Posters To Judge</h1>    
+    <h1 class="title">Posters To Judge</h1>
     <div class="mainBox">
         {% block content %}
         {% for poster in all_posters %}
@@ -25,9 +21,7 @@
         {% endfor %}
         {% endblock %}
     </div>
-
     <h1 class="posterCount">You have {{(count)}} total posters to judge!!!</h1>
-
 </body>
 </html>
 
