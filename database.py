@@ -5,18 +5,19 @@ db_connection = sqlite3.connect(':memory:')
 
 c = db_connection.cursor()
 
-c.execute("""CREATE TABLE user_collection (
+c.execute("""CREATE TABLE IF NOT EXISTS user_collection (
         name text,
         email text,
         password text
         )""")
 
-c.execute("""CREATE TABLE poster_collection (
+c.execute("""CREATE TABLE IF NOT EXISTS poster_collection (
         title text,
         members text,
         category text,
         description text,
-        id integer
+        id integer,
+        image blob
         )""")
 
 
@@ -44,6 +45,13 @@ def get_poster(id):
         c.execute("""SELECT * FROM poster_collection WHERE id=:id""", {'id':id})
         return c.fetchone()
 
+def get_poster_image(id):
+    with db_connection:
+        # Execute an SQL query to select the image data for the given poster ID
+        result = c.execute("""SELECT image FROM poster_collection WHERE id=:?""", (id,))
+        image_data = result.fetchone()[0]
+        # Return the image data as a file attachment?
+        return send_file(image_data, attachment_filename='poster_image.jpg', as_attachment=True)
 
 def update_poster(poster):
     with db_connection:
