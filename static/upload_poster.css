@@ -41,8 +41,8 @@ body
 
 .main-content
 {
-    background-color: rgb(137, 172, 184);
-    color: rgb(0, 0, 85);
+    background-color: rgb(87,172,220);
+    color: rgb(34, 35, 57);
     font-weight: bold;
     font-size: larger;
     flex: 3;
@@ -52,30 +52,44 @@ body
 }
 .sidebar
 {
-    background-color: rgb(158, 173, 179);
-    color: rgb(0, 0, 85);
+    background-color: rgb(39, 107, 176);
+    color: rgb(152, 152, 171);
     font-weight: bold;
     flex: 1;
     margin-right: 2%;
 }
 
-#display_image
+#imagePreview 
 {
     width: 390px;
     height: 270px;
     border: 3px solid black;
-    background: url(as.jpg) no-repeat;
-    background-position: center;
-    background-size: cover;
     margin-top: 100px;
-}
-
-.wrap {
     display: flex;
     align-items: center;
-  }
+    justify-content: center;
+    background-color: rgb(203, 203, 203);
+}
   
-  label {
+#imagePreview img 
+{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+#fileInput {
+    margin-top: 10px;
+  }
+
+.wrap 
+{
+    display: flex;
+    align-items: center;
+}
+  
+label 
+{
   display: flex;
   align-items: center;
   margin-bottom: 10px;
@@ -127,8 +141,8 @@ input
 
 button
 {
-    background-color: #00203fff;
-    color: #adefd1ff;
+    background-color: #444444;
+    color: #ffffff;
     border: none;
     padding: 10px 20px;
     text-align: center;
@@ -140,8 +154,8 @@ button
   
 button:hover 
 {
-    background-color: #adefd1ff;
-    color: #00203fff;
+    background-color: #ffffff;
+    color:#0d0d0d;
 }
 
 #title,#groupEmail,#category,#description
