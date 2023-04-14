@@ -33,9 +33,11 @@ def index():
             return render_template('index.html')
         else:
             if "@student.gsu.edu" in email:
+                print("FOUND: user:", account['user_id'], ' poster: ', account['poster_id'])
                 return redirect(url_for('upload_poster', userID=account['user_id'], posterID=account['poster_id']))
             else:
-                return redirect(url_for('posters', posterID=account['poster_id']))
+                return redirect(url_for('posters'))
+                # return redirect(url_for('posters', posterID=account['poster_id']))
 
 
 
@@ -48,6 +50,7 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirmPassword = request.form['confirmPassword']
+        poster_id = -1
         if len(name) < 1 or len(email) < 1 or len(password) < 1:
             flash('ISSUE: not enough characters in text field.')
             return redirect(url_for('register'))
@@ -56,8 +59,8 @@ def register():
             account = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
             if account == None:
                 print('OK: creating the account')
-                conn.execute("""INSERT INTO users (email, name, password) VALUES (?, ?, ?)""", 
-                          (email, name, password))
+                conn.execute("""INSERT INTO users (email, name, password, poster_id) VALUES (?, ?, ?, ?)""", 
+                          (email, name, password, poster_id))
                 conn.commit()
                 conn.close()
                 return redirect(url_for('index'))
@@ -104,13 +107,16 @@ def rate_poster(posterID):
 
 # CONTESTANT ROUTES
 @app.route('/contestant/upload_poster', methods=('GET', 'POST'))
-def upload_poster(userID, posterID):
-    conn = poster_db()
-    user = conn.execute('SELECT * FROM users WHERE user_id = ?', (userID,)).fetchone()
-    
-    print(user, " HERE IT IS HERE IT IS")
+def upload_poster():
+    userID = request.args['userID']
+    posterID = request.args['posterID']
+    # user = conn.execute('SELECT * FROM users WHERE user_id = ?', (userID,)).fetchone()
 
-    if user is None:
+    print('poster:', posterID, ' user:', userID)
+    
+    if posterID == -1:
+
+
         print('This user did not have a poster -> creating the poster.')
         # create the poster
         # poster_title = request.form['title']
@@ -125,27 +131,37 @@ def upload_poster(userID, posterID):
         poster_category = 'test category'
         poster_description = 'test description'
         poster_image = 'test image'
-
-        print('poster:', posterID, ' user:', userID)
-
-        # create the poster
-        # conn.execute("""INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image) VALUES (?, ?, ?, ?, ?)""",
-                    #  (poster_title, poster_emails, poster_category, poster_description, poster_image))
-        conn.close()
         
-        # get the poster id
-        # new_poster
-        # poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchone()
 
-        # conn.execute("""UPDATE users SET poster_id = ? WHERE user_id = ?""", (new_poster['poster_id'], user['user_id']))
+        conn = poster_db()
+
+        conn.execute("""INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image) VALUES (?, ?, ?, ?, ?)""",
+                     (poster_title, poster_emails, poster_category, poster_description, poster_image))
+        print('successfully made poster')
+
+
+        posterID = conn.execute('SELECT * FROM posters WHERE poster_title = ?', (poster_title,)).fetchone()
+        print('successfully found the poster')
+
+
+        conn.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (posterID, userID))
+        # conn.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (posterID['poster_id'], userID))
+        print('successfully updated the user with poster id ')
+
+        # conn.execute("""UPDATE users SET poster_id = ? WHERE user_id = ?""", (poster['poster_id'], user['user_id']))
         # conn.execute("""UPDATE users SET (email, name, password, poster_id) VALUES (?, ?, ?, ?)""", 
         #                   (email, name, password, poster['poster_id']))
         # conn.commit()
         # conn.close()
         # return redirect(url_for('view_poster', posterID=poster['poster_id']))
+        print("created the poster successfully")
+        conn.close()
+
     else:
-        print("this user did have a poster -> loading the poster")
-    return render_template('index.html')
+        print("we found the poster -> loading the poster")
+
+    # return render_template('index.html')
+    return redirect(url_for('index'))
 
 
 
