@@ -109,14 +109,12 @@ def rate_poster(posterID):
 @app.route('/contestant/upload_poster', methods=('GET', 'POST'))
 def upload_poster():
     userID = request.args['userID']
-    posterID = request.args['posterID']
+    posterID = int(request.args['posterID'])
     # user = conn.execute('SELECT * FROM users WHERE user_id = ?', (userID,)).fetchone()
 
     print('poster:', posterID, ' user:', userID)
     
     if posterID == -1:
-
-
         print('This user did not have a poster -> creating the poster.')
         # create the poster
         # poster_title = request.form['title']
