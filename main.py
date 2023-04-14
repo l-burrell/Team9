@@ -132,14 +132,6 @@ def upload_poster():
         poster_description = request.form['description']
         poster_image = request.form['image']
         is_rated = 'false'
-
-        # testing data 
-        # poster_title = 'test title'
-        # poster_emails = 'mem1, mem2, mem3'
-        # poster_category = 'test category'
-        # poster_description = 'test description'
-        # poster_image = 'test image'
-        
         conn = poster_db()
         conn.execute("""INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image, is_rated) VALUES (?, ?, ?, ?, ?, ?)""",
                     (poster_title, poster_emails, poster_category, poster_description, poster_image, is_rated))
