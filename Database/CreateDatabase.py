@@ -13,14 +13,15 @@ def create_database():
         #Creates tables
         cur = conn.cursor()
 
-        #Posters (poster_id, poster_title, poster_emails, poster_category, poster_description, poster_image)
+        #Posters (poster_id, poster_title, poster_emails, poster_category, poster_description, poster_image, is_rated)
         posterQuery = "CREATE TABLE IF NOT EXISTS posters(poster_id INTEGER PRIMARY KEY AUTOINCREMENT, poster_title STRING NOT NULL, poster_emails STRING NOT NULL, poster_category STRING NOT NULL, poster_description STRING, poster_image BLOB, is_rated STRING);"
         cur.execute(posterQuery)
 
         #Scores (score_id, clarity, organization, content, relevance, visual appeal)
         scoreQuery = "CREATE TABLE IF NOT EXISTS scores(poster_id INTEGER PRIMARY KEY, clarity INT, organization INT, content INT, relevance INT, visuals INT);"
         cur.execute(scoreQuery)
-
+        
+        #Users (user_id, name, email, password, poster_id)
         users = "CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING NOT NULL, email STRING NOT NULL, password STRING NOT NULL, poster_id INTEGER);"
         cur.execute(users)
 
