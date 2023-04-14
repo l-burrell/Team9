@@ -1,6 +1,13 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, abort
 import sqlite3
 
+#Import Database files
+from Database import PosterDriver
+from Database.PosterDriver import PosterRetriever
+
+#Create routing blueprint
+ViewPoster_Routing = Blueprint('ViewPoster_Routing', __name__)
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = "thiswasoursecretkeyokay"
