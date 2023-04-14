@@ -6,7 +6,7 @@ from Database import PosterDriver
 from Database.PosterDriver import PosterRetriever
 
 #Create routing blueprint
-ViewPoster_Routing = Blueprint('ViewPoster_Routing', __name__)
+# ViewPoster_Routing = Blueprint('ViewPoster_Routing', __name__)
 
 app = Flask(__name__)
 
@@ -44,7 +44,6 @@ def index():
                 return redirect(url_for('upload_poster', userID=account['user_id'], posterID=account['poster_id']))
             else:
                 return redirect(url_for('posters'))
-                # return redirect(url_for('posters', posterID=account['poster_id']))
 
 
 
@@ -82,7 +81,8 @@ def register():
 @app.route('/judge/posters', methods=('GET', 'POST'))
 def posters():
     conn = poster_db()
-    all_posters = conn.execute('SELECT * FROM posters').fetchall()
+    is_rated = 'false'
+    all_posters = conn.execute('SELECT * FROM posters WHERE is_rated = ?', (is_rated,)).fetchall()
     conn.close()
     return render_template('posters.html', all_posters=all_posters, count=len(all_posters))
 
@@ -92,7 +92,6 @@ def posters():
 @app.route('/judge/posters/<posterID>', methods=('GET', 'POST'))
 def rate_poster(posterID):
     if request.method == 'GET':
-        # posterID = request.args['posterID']
         conn = poster_db()
         poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchone()
         conn.close()
@@ -100,20 +99,17 @@ def rate_poster(posterID):
         return render_template('judge_poster.html', poster=poster)
     else:
         conn = poster_db()
-        poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchone()
-        print('creating a new score for poster with id:', posterID)
-        # create the scoring
         clarity = request.form['clarity']
         organization = request.form['organization']
         content = request.form['content']
         relevance = request.form['relevance']
         visuals = request.form['visuals']
-
-
-        # TODO:
-        # insert the scoring into the database, and connect to the posters table....
-        
-
+        is_rated = 'true'
+        conn.execute("""INSERT INTO scores (poster_id, clarity, organization, content, relevance, visuals) VALUES (?, ?, ?, ?, ?, ?)""",
+                    (posterID, clarity, organization, content, relevance, visuals))
+        conn.commit()
+        conn.execute('UPDATE posters SET is_rated = ? WHERE poster_id = ?', (is_rated, posterID,))
+        conn.commit()
         return redirect(url_for('posters'))
     
 
@@ -129,14 +125,13 @@ def upload_poster():
             return render_template('upload_poster.html')
         else:
             return redirect(url_for('view_poster', posterID=posterID))
-            # return render_template('view_poster.html', posterID=posterID)
     else:
-        # create the poster
         poster_title = request.form['title']
         poster_emails = request.form['group_members']
         poster_category = request.form['category']
         poster_description = request.form['description']
         poster_image = request.form['image']
+        is_rated = 'false'
 
         # testing data 
         # poster_title = 'test title'
@@ -146,8 +141,8 @@ def upload_poster():
         # poster_image = 'test image'
         
         conn = poster_db()
-        conn.execute("""INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image) VALUES (?, ?, ?, ?, ?)""",
-                    (poster_title, poster_emails, poster_category, poster_description, poster_image))
+        conn.execute("""INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image, is_rated) VALUES (?, ?, ?, ?, ?, ?)""",
+                    (poster_title, poster_emails, poster_category, poster_description, poster_image, is_rated))
         conn.commit()
         poster = conn.execute('SELECT * FROM posters WHERE poster_title = ?', (poster_title,)).fetchone()
         conn.commit()
@@ -162,9 +157,12 @@ def upload_poster():
 @app.route('/contestant/view_poster/<posterID>', methods=('GET', 'POST'))
 def view_poster(posterID):  
     conn = poster_db()
-    poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchall()
+    poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchone()
+    conn.commit()
+    score = conn.execute('SELECT * FROM scores WHERE poster_id = ?', (posterID,)).fetchone()
+    conn.commit()
     conn.close()
-    return render_template('view_poster.html', poster=poster)
+    return render_template('view_poster.html', poster=poster, score=score)
 
 
 
