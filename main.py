@@ -140,11 +140,11 @@ def upload_poster():
         print('successfully made poster')
 
 
-        posterID = conn.execute('SELECT * FROM posters WHERE poster_title = ?', (poster_title,)).fetchone()
+        poster = conn.execute('SELECT * FROM posters WHERE poster_title = ?', (poster_title,)).fetchone()
         print('successfully found the poster')
 
 
-        conn.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (posterID, userID))
+        conn.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (poster['poster_id'], userID))
         # conn.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (posterID['poster_id'], userID))
         print('successfully updated the user with poster id ')
 
