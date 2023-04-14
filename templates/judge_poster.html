@@ -29,9 +29,7 @@
 
         <label for="description"><b>Description:</b></label>
         <br>
-        <textarea id="description" name="description" readonly>
-            {{poster['description']}}
-        </textarea>
+        <textarea id="description" name="description" readonly>{{poster['poster_description']}}</textarea>
     </div>
     {% endblock %}
     <br>
@@ -184,7 +182,8 @@
     </form>
 
     <br>
-    <img src="TestPoster.jpg" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX">
+    <!-- <img src="TestPoster.jpg" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX"> -->
+    <img src="{{poster['poster_description']}}" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX">
     <br>
 
 </body>
