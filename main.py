@@ -22,16 +22,14 @@ def index():
         email = request.form['email']
         password = request.form['password']
         if len(email) < 1 or len(password) < 1:
-            flash('ISSUE: not enough characters in text field...')
+            flash('ISSUE: not enough characters in text field.')
             return redirect(url_for('index'))
         conn = poster_db()
         account = conn.execute('SELECT * FROM users WHERE email = ? AND password = ?',
                      (email, password)).fetchone()
         conn.close()
-        print('[account] user_id:', account['user_ID'], ' poster_id:',account['poster_ID'])
-
         if account == None:
-            flash('Incorrect login credentials')
+            flash('ISSUE: Incorrect login credentials')
             return render_template('index.html')
         else:
             if "@student.gsu.edu" in email:
@@ -51,7 +49,7 @@ def register():
         password = request.form['password']
         confirmPassword = request.form['confirmPassword']
         if len(name) < 1 or len(email) < 1 or len(password) < 1:
-            flash('ISSUE: not enough characters in text field...')
+            flash('ISSUE: not enough characters in text field.')
             return redirect(url_for('register'))
         if password == confirmPassword:
             conn = poster_db()
@@ -65,7 +63,7 @@ def register():
                 return redirect(url_for('index'))
             else:
                 conn.close()
-                flash('ISSUE: account already found in the database...')
+                flash('ISSUE: account already found in the database.')
                 return render_template('register.html')
 
 
