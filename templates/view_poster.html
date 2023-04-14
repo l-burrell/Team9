@@ -12,7 +12,7 @@
         <div class=top-bar id=navbar>
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
-                    <li id="title">{{ poster['poster_title'] }}</li>
+                    <li id="title" style="text-transform: uppercase;">{{ poster['poster_title'] }}</li>
                 </ul>
             </div>
             <div class="top-bar-right">
@@ -24,10 +24,10 @@
         <div id="body">
             <div class="grid-x">
                 <div id="information" class="small-12 medium-3 large-3">
-                    <div id="infosection"><p1><b>Title: </b></p1><p4>{{ poster['poster_title'] }}</p4><br></div>
-                    <div id="infosection"><p1><b>Emails: </b></p1><p4>{{ poster['poster_emails'] }}</p4><br></div>
-                    <div id="infosection"><p1><b>Category: </b></p1><p4> {{ poster['poster_category'] }}</p4><br></div>
-                    <div id="infosection"><p1><b>Description: </b></p1><p4> {{ poster['poster_description'] }} </p4><br></div>
+                    <div id="infosection"><p1><b>Title: </b></p1><p4 style="text-transform: capitalize;">{{ poster['poster_title'] }}</p4><br></div>
+                    <div id="infosection"><p1><b>Emails: </b></p1><p4 style="text-transform: capitalize;">{{ poster['poster_emails'] }}</p4><br></div>
+                    <div id="infosection"><p1><b>Category: </b></p1><p4 style="text-transform: capitalize;"> {{ poster['poster_category'] }}</p4><br></div>
+                    <div id="infosection"><p1><b>Description: </b></p1><p4 style="text-transform: capitalize;"> {{ poster['poster_description'] }} </p4><br></div>
                 </div>
                 <div id="imagecontainer" class="small-12 medium-6 large-6">
                     {{ image | safe }}
