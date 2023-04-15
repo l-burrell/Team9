@@ -6,9 +6,10 @@ from Database import PosterDriver
 from Database.PosterDriver import PosterRetriever
 
 #Create routing blueprint
-ViewPoster_Routing = Blueprint('ViewPoster_Routing', __name__)
+from Routing.ViewPoster_Routing import ViewPoster_Routing
 
 app = Flask(__name__)
+app.register_blueprint(ViewPoster_Routing)
 
 app.config['SECRET_KEY'] = "thiswasoursecretkeyokay"
     
