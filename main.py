@@ -231,6 +231,23 @@ def upload():
     conn.commit()
     conn.close()
 
+#recieve the image
+#@app.route('/image/<int:image_id>', methods=['GET'])
+#def serve_image(filename):
+#    conn = poster_db()
+#    cur = conn.cursor()
+#    cur.execute('SELECT filename, data FROM images WHERE id = ?', (image_id,))
+#    result = cur.fetchone()
+#    conn.close()
+#    if result is None:
+#        abort(404)
+#
+#    filename, data = result
+#    response = make_response(data)
+#    response.headers.set('Content-Type', 'image/jpeg')
+#    response.headers.set('Content-Disposition', f'attachment; filename="{filename}"')
+#    return response
+
 if __name__ == '__main__':
     app.run(debug=True)
 
