@@ -9,6 +9,10 @@ from Routing.ViewPoster_Routing import ViewPoster_Routing
 
 from werkzeug.utils import secure_filename
 
+#insecting the image library 
+from PIL import Image
+import io
+
 #Create Database; Comment out if not needed
 #from Database import CreateDatabase
 #CreateDatabase.create_database()
@@ -209,6 +213,23 @@ def upload_poster():
 
 def allowed_file(filename):
     return filename.lower().endswith((".png", ".jpg"))
+
+#inserting the image into the database
+@app.route('/upload', methods=['POST'])
+def upload():
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    # Read the image data and convert it to bytes
+    img = Image.open(io.BytesIO(file.read()))
+    img_bytes = io.BytesIO()
+    img.save(img_bytes, format='JPEG')
+    img_bytes = img_bytes.getvalue()
+    # Save the image bytes to the database
+    conn = poster_db()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO images (filename, data) VALUES (?, ?)', (filename, img_bytes))
+    conn.commit()
+    conn.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
