@@ -1,17 +1,24 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, abort, Blueprint
 import sqlite3
+import os
 
 #Import Database files
 from Database import PosterDriver
 from Database.PosterDriver import PosterRetriever
-
-#Create routing blueprint
 from Routing.ViewPoster_Routing import ViewPoster_Routing
 
+from werkzeug.utils import secure_filename
+
+#Create Database; Comment out if not needed
+#from Database import CreateDatabase
+#CreateDatabase.create_database()
+
+#Create app and register blueprint
 app = Flask(__name__)
 app.register_blueprint(ViewPoster_Routing)
 
 app.config['SECRET_KEY'] = "thiswasoursecretkeyokay"
+app.config['UPLOAD_FOLDER'] = "./upload"
     
 
 # connect to the database
@@ -33,7 +40,10 @@ def index():
             flash('ISSUE: not enough characters in text field.')
             return redirect(url_for('index'))
         conn = poster_db()
-        account = conn.execute('SELECT * FROM users WHERE email = ? AND password = ?',
+        if not conn:
+            return render_template('index.html')
+        cur = conn.cursor()
+        account = cur.execute('SELECT user_id, poster_id FROM users WHERE email = ? AND password = ?',
                      (email, password)).fetchone()
         conn.close()
         if account == None:
@@ -63,10 +73,13 @@ def register():
             return redirect(url_for('register'))
         if password == confirmPassword:
             conn = poster_db()
-            account = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
+            if not conn:
+                return redirect(url_for('register'))
+            cur = conn.cursor()
+            account = cur.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
             if account == None:
                 print('OK: creating the account')
-                conn.execute("""INSERT INTO users (email, name, password, poster_id) VALUES (?, ?, ?, ?)""", 
+                cur.execute("""INSERT INTO users (email, name, password, poster_id) VALUES (?, ?, ?, ?)""", 
                           (email, name, password, poster_id))
                 conn.commit()
                 conn.close()
@@ -83,9 +96,12 @@ def register():
 def posters():
     conn = poster_db()
     is_rated = 'false'
-    all_posters = conn.execute('SELECT * FROM posters WHERE is_rated = ?', (is_rated,)).fetchall()
-    conn.close()
-    return render_template('posters.html', all_posters=all_posters, count=len(all_posters))
+    if conn:
+        cur = conn.cursor()
+        all_posters = cur.execute('SELECT * FROM posters WHERE is_rated = ?', (is_rated,)).fetchall()
+        conn.close()
+        return render_template('posters.html', all_posters=all_posters, count=len(all_posters))
+    return render_template('poster.html', all_posters=None, count=0)
 
 
 
@@ -106,67 +122,93 @@ def rate_poster(posterID):
         relevance = request.form['relevance']
         visuals = request.form['visuals']
         is_rated = 'true'
-        conn.execute("""INSERT INTO scores (poster_id, clarity, organization, content, relevance, visuals) VALUES (?, ?, ?, ?, ?, ?)""",
-                    (posterID, clarity, organization, content, relevance, visuals))
-        conn.commit()
-        conn.execute('UPDATE posters SET is_rated = ? WHERE poster_id = ?', (is_rated, posterID,))
-        conn.commit()
+        if conn:
+            cur = conn.cursor()
+            cur.execute("""INSERT INTO scores (poster_id, clarity, organization, content, relevance, visuals) VALUES (?, ?, ?, ?, ?, ?)""",
+                        (posterID, clarity, organization, content, relevance, visuals))
+            conn.commit()
+            cur.execute('UPDATE posters SET is_rated = ? WHERE poster_id = ?', (is_rated, posterID,))
+            conn.commit()
         return redirect(url_for('posters'))
-    
 
 
 # CONTESTANT ROUTES
-@app.route('/contestant/upload_poster', methods=('GET', 'POST'))
+@app.route('/upload_poster', methods=(['GET','POST']))
 def upload_poster():
-    userID = request.args['userID']
-    posterID = int(request.args['posterID'])
-    print('poster:', posterID, ' user:', userID)
-    if request.method == 'GET':
-        if posterID == -1:
-            return render_template('upload_poster.html')
-        else:
-            return redirect(url_for('view_poster', posterID=posterID))
+    userID = request.args.get("userID")
+
+    if request.args.get("posterID"):
+        posterID = int(request.args.get("posterID"))
     else:
+        posterID = -1
+    print('poster:', posterID, ' user:', userID)
+
+    if request.method == "GET":    
+        if posterID != -1:
+            return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=posterID))
+        return render_template("upload_poster.html", userID=userID)
+    else:
+        #User does not have a poster
         poster_title = request.form['title']
-        poster_emails = request.form['group_members']
+        poster_emails = request.form['group_email']
         poster_category = request.form['category']
         poster_description = request.form['description']
-        poster_image = request.form['image']
-        is_rated = 'false'
+
+        if len(poster_title) < 1:
+            flash("ISSUE: Please enter a poster title")
+            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
+        if len(poster_emails) < 1:
+            flash("ISSUE: Please enter a poster email")
+            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
+        if len(poster_category) < 1:
+            flash("ISSUE: Please enter a poster category")
+            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))   
+        if len(poster_description) < 1:
+            flash("ISSUE: Please enter a poster description")
+            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
+        
+        if 'image' not in request.files:
+            print("There is no image in form")
+            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
+        
+        poster_image = request.files['image']
+
+        if poster_image.filename == '':
+            flash("ISSUE: Please submit an image")
+            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
+
+        if not poster_image:
+            flash("ISSUE: Could not upload poster")
+            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
+
+        if not allowed_file(poster_image.filename):
+            flash("ISSUE: Please submit a .jpg or .png file")
+            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
+    
+        filename = secure_filename(poster_image.filename)
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        print(path)
+        poster_image.save(path)
+
         conn = poster_db()
-        conn.execute("""INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image, is_rated) VALUES (?, ?, ?, ?, ?, ?)""",
-                    (poster_title, poster_emails, poster_category, poster_description, poster_image, is_rated))
-        conn.commit()
-        poster = conn.execute('SELECT * FROM posters WHERE poster_title = ?', (poster_title,)).fetchone()
-        conn.commit()
-        conn.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (poster['poster_id'], userID))
-        conn.commit()
-        conn.close()
+        if conn:
+            cur = conn.cursor()
+            cur.execute("""INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image) VALUES (?, ?, ?, ?, ?)""",
+                        (poster_title, poster_emails, poster_category, poster_description, poster_image))
+            poster = cur.execute('SELECT last_insert_rowid()').fetchone()
+            conn.commit()
 
-    # return redirect(url_for('index'))
+            if poster:
+                userID = request.args.get("userID")
+                print("userID: " + userID)
+                print(poster[0])
+                cur.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (poster[0], userID))
+                conn.commit()
+            return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=poster[0]))
+        return render_template("upload_poster.html", userID=userID)
 
-
-
-@app.route('/contestant/view_poster/<posterID>', methods=('GET', 'POST'))
-def view_poster(posterID):  
-    conn = poster_db()
-    poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchone()
-    conn.commit()
-    score = conn.execute('SELECT * FROM scores WHERE poster_id = ?', (posterID,)).fetchone()
-    conn.commit()
-    conn.close()
-    return render_template('view_poster.html', poster=poster, score=score)
-
-
-
-# IN-PROGRESS
-@app.route('//submit_poster', methods=['POST'])
-def submit_poster():
-    file = request.files['image']
-    file.save('/path/to/save/folder/' + file.filename)
-    return 'File uploaded successfully!'
-
-
+def allowed_file(filename):
+    return filename.lower().endswith((".png", ".jpg"))
 
 if __name__ == '__main__':
     app.run(debug=True)
