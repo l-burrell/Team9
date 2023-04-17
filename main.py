@@ -181,7 +181,8 @@ def upload_poster():
         if not allowed_file(poster_image.filename):
             flash("ISSUE: Please submit a .jpg or .png file")
             return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
-        filename = secure_filename(poster_image.filename)
+        #filename = secure_filename(poster_image.filename)
+        filename = secure_filename(posterID + '.' +filename.rsplit('.', 1)[1])
         poster_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         # return redirect(url_for('import_image', poster_image=filename))
         # return redirect(url_for(import_image, file=filename, userID=userID, posterID=posterID))
