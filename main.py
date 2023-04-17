@@ -183,8 +183,6 @@ def upload_poster():
             return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
         filename = secure_filename(poster_image.filename)
         # filename = secure_filename(posterID + '.' +filename.rsplit('.', 1)[1])
-
-        print(filename)
         poster_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         conn = poster_db()
         if conn:
@@ -238,28 +236,12 @@ def upload():
 
 
 
-# @app.route('/display/<filename>')
-# def display_image(filename):
-#     return redirect(url_for('static', filename='images/'+filename), code=301)
+@app.route('/display/<filename>')
+def display_image(filename):
+    return redirect(url_for('static', filename='images/'+filename), code=301)
 
 
 
-#recieve the image
-#@app.route('/image/<int:image_id>', methods=['GET'])
-#def serve_image(filename):
-#    conn = poster_db()
-#    cur = conn.cursor()
-#    cur.execute('SELECT filename, data FROM images WHERE id = ?', (image_id,))
-#    result = cur.fetchone()
-#    conn.close()
-#    if result is None:
-#        abort(404)
-#
-#    filename, data = result
-#    response = make_response(data)
-#    response.headers.set('Content-Type', 'image/jpeg')
-#    response.headers.set('Content-Disposition', f'attachment; filename="{filename}"')
-#    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
