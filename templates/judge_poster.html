@@ -176,16 +176,15 @@
         <br>
         <a href="{{url_for('posters')}}">
             <button>
-                SUBMIT FEEDBACK
+                SUBMIT FEEDBACK {{url_for('display_image', filename='demo.jpg')}}
             </button>
         </a>
     </form>
-
     <br>
     <!-- <img src="TestPoster.jpg" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX"> -->
     <!-- <img src="{{poster['poster_image']}}" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX"> -->
     <!-- <img src="/Team9/upload/demo.jpg" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX"> -->
-    <img src="{{url_for('upload', filename='demo.jpg')}}" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX">
+    <img src="{{url_for('display_image', filename='demo.jpg')}}" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX">
     <br>
 
 </body>

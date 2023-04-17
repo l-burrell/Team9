@@ -181,26 +181,18 @@ def upload_poster():
         if not allowed_file(poster_image.filename):
             flash("ISSUE: Please submit a .jpg or .png file")
             return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
-        #filename = secure_filename(poster_image.filename)
-        filename = secure_filename(posterID + '.' +filename.rsplit('.', 1)[1])
+        filename = secure_filename(poster_image.filename)
+        # filename = secure_filename(posterID + '.' +filename.rsplit('.', 1)[1])
+
+        print(filename)
         poster_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        # return redirect(url_for('import_image', poster_image=filename))
-        # return redirect(url_for(import_image, file=filename, userID=userID, posterID=posterID))
-        # return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
-        
-
-        # path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        # print(path)
-        # poster_image.save(path)
-
         conn = poster_db()
         if conn:
             cur = conn.cursor()
             cur.execute("""INSERT INTO posters (poster_title, poster_emails, poster_category, poster_description, poster_image) VALUES (?, ?, ?, ?, ?)""",
-                        (poster_title, poster_emails, poster_category, poster_description, poster_image))
+                        (poster_title, poster_emails, poster_category, poster_description, filename))
             poster = cur.execute('SELECT last_insert_rowid()').fetchone()
             conn.commit()
-
             if poster:
                 userID = request.args.get("userID")
                 print("userID: " + userID)
@@ -209,7 +201,6 @@ def upload_poster():
                 conn.commit()
             return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=poster[0]))
         return render_template("upload_poster.html", userID=userID)
-        # return redirect(url_for(import_image, file=filename, userID=userID, posterID=posterID))
 
 
 
@@ -223,7 +214,6 @@ def allowed_file(filename):
 def import_image(file):
     userID = request.args.get("userID")
     posterID = request.args.get("posterID")
-    # return redirect(url_for('upload_poster', userID=userID, posterID=posterID), app.config['UPLOAD_FOLDER'], file)
     return send_from_directory(app.config['UPLOAD_FOLDER'], file)
 
 
@@ -244,6 +234,15 @@ def upload():
     cur.execute('INSERT INTO images (filename, data) VALUES (?, ?)', (filename, img_bytes))
     conn.commit()
     conn.close()
+
+
+
+
+# @app.route('/display/<filename>')
+# def display_image(filename):
+#     return redirect(url_for('static', filename='images/'+filename), code=301)
+
+
 
 #recieve the image
 #@app.route('/image/<int:image_id>', methods=['GET'])

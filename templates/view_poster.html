@@ -30,7 +30,8 @@
                     <div id="infosection"><p1><b>Description: </b></p1><p4 style="text-transform: capitalize;"> {{ poster['poster_description'] }} </p4><br></div>
                 </div>
                 <div id="imagecontainer" class="small-12 medium-6 large-6">
-                    {{ image | safe }}
+                    <!-- {{ image | safe }} -->
+                    <img src="{{url_for('display_image', filename='demo.jpg')}}" alt="the image would be displayed here">
                 </div>
                 <div id="scores" class="small-12 medium-3 large-3">
                     <p1 id="scoretitle"><b>Scores</b></p1>
