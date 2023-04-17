@@ -22,7 +22,7 @@ app = Flask(__name__)
 app.register_blueprint(ViewPoster_Routing)
 
 app.config['SECRET_KEY'] = "thiswasoursecretkeyokay"
-app.config['UPLOAD_FOLDER'] = "./upload"
+app.config['UPLOAD_FOLDER'] = "./static/images"
     
 
 # connect to the database
