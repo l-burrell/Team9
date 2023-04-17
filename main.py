@@ -24,7 +24,7 @@ app.register_blueprint(ViewPoster_Routing)
 app.config['SECRET_KEY'] = "thiswasoursecretkeyokay"
 app.config['UPLOAD_FOLDER'] = "./static/images"
     
-    
+
 
 # connect to the database
 def poster_db():
@@ -152,7 +152,9 @@ def upload_poster():
         posterID = -1
     if request.method == "GET":    
         if posterID != -1:
-            return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=posterID))
+            # return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=posterID))
+            return redirect(url_for('view_poster', posterID=posterID))
+
         return render_template("upload_poster.html", userID=userID)
     else:
         #User does not have a poster
@@ -196,23 +198,29 @@ def upload_poster():
                 userID = request.args.get("userID")
                 cur.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (poster[0], userID))
                 conn.commit()
-            return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=poster[0]))
+            return redirect(url_for('view_poster', posterID=posterID))
+            # return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=poster[0]))
         return render_template("upload_poster.html", userID=userID)
 
 
 
 
-# @app.route('/contestant/view_poster/<posterID>', methods=('GET', 'POST'))
-# def view_poster(posterID):  
-#     conn = poster_db()
-#     poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchall()
-#     conn.close()
-#     return render_template('view_poster.html', poster=poster)
+
+@app.route('/contestant/view_poster/<posterID>', methods=('GET', 'POST'))
+def view_poster(posterID):  
+    conn = poster_db()
+    poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchone()
+    conn.commit()
+    score = conn.execute('SELECT * FROM scores WHERE poster_id = ?', (posterID,)).fetchone()
+    conn.close()
+    return render_template('view_poster.html', poster=poster, score=score)
+
 
 
 
 def allowed_file(filename):
     return filename.lower().endswith((".png", ".jpg"))
+
 
 
 
