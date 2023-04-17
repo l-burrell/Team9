@@ -24,12 +24,14 @@ app.register_blueprint(ViewPoster_Routing)
 app.config['SECRET_KEY'] = "thiswasoursecretkeyokay"
 app.config['UPLOAD_FOLDER'] = "./static/images"
     
+    
 
 # connect to the database
 def poster_db():
     conn = sqlite3.connect('PosterDatabase.db')
     conn.row_factory = sqlite3.Row
     return conn
+
 
 
 # # GENERAL ROUTES
@@ -148,7 +150,6 @@ def upload_poster():
         posterID = int(request.args.get("posterID"))
     else:
         posterID = -1
-    print('poster:', posterID, ' user:', userID)
     if request.method == "GET":    
         if posterID != -1:
             return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=posterID))
@@ -193,13 +194,20 @@ def upload_poster():
             conn.commit()
             if poster:
                 userID = request.args.get("userID")
-                print("userID: " + userID)
-                print(poster[0])
                 cur.execute('UPDATE users SET poster_id = ? WHERE user_id = ?', (poster[0], userID))
                 conn.commit()
             return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=poster[0]))
         return render_template("upload_poster.html", userID=userID)
 
+
+
+
+# @app.route('/contestant/view_poster/<posterID>', methods=('GET', 'POST'))
+# def view_poster(posterID):  
+#     conn = poster_db()
+#     poster = conn.execute('SELECT * FROM posters WHERE poster_id = ?', (posterID,)).fetchall()
+#     conn.close()
+#     return render_template('view_poster.html', poster=poster)
 
 
 
