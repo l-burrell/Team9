@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, abort, Blueprint
+from flask import Flask, render_template, request, flash, redirect, url_for, abort, Blueprint, send_from_directory
 import sqlite3
 import os
 
@@ -62,6 +62,7 @@ def index():
 
 
 
+
 @app.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method=='GET':
@@ -92,6 +93,7 @@ def register():
                 conn.close()
                 flash('ISSUE: account already found in the database.')
                 return render_template('register.html')
+
 
 
 
@@ -136,17 +138,17 @@ def rate_poster(posterID):
         return redirect(url_for('posters'))
 
 
+
+
 # CONTESTANT ROUTES
 @app.route('/upload_poster', methods=(['GET','POST']))
 def upload_poster():
     userID = request.args.get("userID")
-
     if request.args.get("posterID"):
         posterID = int(request.args.get("posterID"))
     else:
         posterID = -1
     print('poster:', posterID, ' user:', userID)
-
     if request.method == "GET":    
         if posterID != -1:
             return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=posterID))
@@ -157,7 +159,6 @@ def upload_poster():
         poster_emails = request.form['group_email']
         poster_category = request.form['category']
         poster_description = request.form['description']
-
         if len(poster_title) < 1:
             flash("ISSUE: Please enter a poster title")
             return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
@@ -170,29 +171,26 @@ def upload_poster():
         if len(poster_description) < 1:
             flash("ISSUE: Please enter a poster description")
             return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
-        
-        if 'image' not in request.files:
-            print("There is no image in form")
-            return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
-        
-        poster_image = request.files['image']
-
+        poster_image = request.files['file']
         if poster_image.filename == '':
             flash("ISSUE: Please submit an image")
             return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
-
         if not poster_image:
             flash("ISSUE: Could not upload poster")
             return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
-
         if not allowed_file(poster_image.filename):
             flash("ISSUE: Please submit a .jpg or .png file")
             return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
-    
         filename = secure_filename(poster_image.filename)
-        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        print(path)
-        poster_image.save(path)
+        poster_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # return redirect(url_for('import_image', poster_image=filename))
+        # return redirect(url_for(import_image, file=filename, userID=userID, posterID=posterID))
+        # return redirect(url_for('upload_poster', userID=userID, posterID=posterID))
+        
+
+        # path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        # print(path)
+        # poster_image.save(path)
 
         conn = poster_db()
         if conn:
@@ -210,9 +208,24 @@ def upload_poster():
                 conn.commit()
             return redirect(url_for('ViewPoster_Routing.view_poster', poster_id=poster[0]))
         return render_template("upload_poster.html", userID=userID)
+        # return redirect(url_for(import_image, file=filename, userID=userID, posterID=posterID))
+
+
+
 
 def allowed_file(filename):
     return filename.lower().endswith((".png", ".jpg"))
+
+
+
+@app.route('/uploads/<file>')
+def import_image(file):
+    userID = request.args.get("userID")
+    posterID = request.args.get("posterID")
+    # return redirect(url_for('upload_poster', userID=userID, posterID=posterID), app.config['UPLOAD_FOLDER'], file)
+    return send_from_directory(app.config['UPLOAD_FOLDER'], file)
+
+
 
 #inserting the image into the database
 @app.route('/upload', methods=['POST'])
