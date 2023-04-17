@@ -12,7 +12,7 @@ ViewPoster_Routing = Blueprint('ViewPoster_Routing', __name__)
 
 #Route poster page based off poster_id in url
 @ViewPoster_Routing.route('/view_poster/<int:poster_id>')
-def load_poster(poster_id):
+def view_poster(poster_id):
 
    #Create instance of the class
    dbDriver = PosterRetriever(poster_id)
@@ -49,4 +49,4 @@ def load_poster(poster_id):
       total = "x"
 
    #Render data into html page
-   return render_template('View_Poster.html', id=poster_id, title=poster_title, emails=poster_emails, category=poster_category, description=poster_description, clarity_rating=clarity, organization_rating=organization, content_rating=content, relevance_rating=relevance, visuals_rating=visual, total_rating=total)
+   return render_template('view_poster.html', id=poster_id, title=poster_title, emails=poster_emails, category=poster_category, description=poster_description, clarity_rating=clarity, organization_rating=organization, content_rating=content, relevance_rating=relevance, visuals_rating=visual, total_rating=total)
