@@ -183,7 +183,9 @@
 
     <br>
     <!-- <img src="TestPoster.jpg" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX"> -->
-    <img src="{{poster['poster_description']}}" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX">
+    <!-- <img src="{{poster['poster_image']}}" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX"> -->
+    <!-- <img src="/Team9/upload/demo.jpg" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX"> -->
+    <img src="{{url_for('upload', filename='demo.jpg')}}" alt="THE CONTESTANT'S POSTER WILL GO HERE IN THIS BOX">
     <br>
 
 </body>

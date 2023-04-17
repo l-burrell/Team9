@@ -7,9 +7,11 @@
 	<title>Upload the Poster!</title>
 </head>
 <body>
-	<div class='logout'> 
-		<a href="{{ url_for('index' )}}">Logout</a>
-	</div> 
+	<nav>
+        <ul>
+            <li><a href="{{url_for('index')}}">Logout</a></li>
+        </ul>
+    </nav>
 	<main>
 		<form method="post" enctype="multipart/form-data" action="{{ url_for('upload_poster', userID=userID) }}">
 			<div class="left">
